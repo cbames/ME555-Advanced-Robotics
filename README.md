@@ -16,7 +16,7 @@ docker exec -it operator-operator-1 bash
 ```
 4. Make sure you are able to see the relevant topics from the raspberry py.
 ```
-/opt/ros/iron/setup.bash
+source /opt/ros/iron/setup.bash
 ros2 topic list
 ```
 You should see the follwoing topics: `TODO`
