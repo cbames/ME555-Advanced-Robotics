@@ -1,4 +1,4 @@
-# ros2router-service-test
+# Duke Advanced Robotics Course Project Setup
 
 ## Quick Start
 
