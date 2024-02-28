@@ -20,6 +20,10 @@ docker exec -it operator-operator-1 bash
 ros2 topic list
 ```
 You should see the follwoing topics: `TODO`
+5. Create a directory with your first and last name in the `/home/workspace/` directory in the following format: `FIRSTNAME_LASTNAME` (e.g. `JOHN_SMITH`). Make sure to work and save anything you want to persist in the `/home/workspace/` directory. Only files in this directory will be saved. 
+```
+mkdir FIRSTNAME_LASTNAME
+```
 
 ## Notes
 Networking
