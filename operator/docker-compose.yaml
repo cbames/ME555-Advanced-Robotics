@@ -6,6 +6,7 @@ services:
     environment:
       - ROS_DOMAIN_ID=88
     # interactive mode for this container
+    command: ros2 run demo_nodes_cpp listener
     stdin_open: true
     tty: true
   
