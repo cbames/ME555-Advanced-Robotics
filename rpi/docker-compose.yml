@@ -1,0 +1,33 @@
+version: '2.1'  # Balena supports version 2.1 of the Docker Compose spec
+services:
+  
+  rpi-ros:
+    build: .
+    network_mode: host # use the host network to be able to communicate with the desktop
+    privileged: true # enable to use GPIO pins on rpi
+    # interactive mode for this container
+    stdin_open: true
+    tty: true
+
+  ros2router:
+    build: ./ros2router
+    network_mode: host
+    restart: unless-stopped # needed to reset peers list if a new peer is added
+    depends_on:
+      husarnet:
+        condition: service_started
+    environment:
+      - EXIT_IF_HOST_TABLE_CHANGED=TRUE # exits container, comnined with restart resets peers list 
+      - PARTICIPANTS=husarnet,if-eth0 # interface on which docker containers communicate
+  
+  husarnet:
+    image: husarnet/husarnet:2.0.180
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - '/dev/net/tun'
+    environment:
+      - HOSTNAME=duke-rpi-host
+      - JOINCODE # set this in .env file, find it in husarnet dashboard
+      - WAIT_HOSTNAMES=duke-rpi-host, operator-host
