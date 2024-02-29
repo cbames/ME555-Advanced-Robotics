@@ -7,6 +7,7 @@
 1. Inside the operator directory: create the `.env` file based on `.env.template` and paste the Husarnet Join Code here.
 2. From inside `advrob-project/operator` start the docker containers. This will start 3 contianers. Two are for remote networking and routing, while the last one called `operator` runs `ROS2 Iron` communicates with the raspberry pi via ros2. 
 ```
+cd advrob-project/operator
 docker compose up
 ```
 3. In another terminal enter the `operator` container.
