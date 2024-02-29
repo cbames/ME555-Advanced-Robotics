@@ -5,12 +5,11 @@
 ### Launch operator environment
 
 1. Inside the operator directory: create the `.env` file based on `.env.template` and paste the Husarnet Join Code here.
-2. From inside `advrob-project` start the docker containers. This will start 3 contianers. Two are for remote networking and routing, while the last one called `operator` runs `ROS2 Iron` and is is able to communicate with the raspberry pi
-via ros2. 
+2. From inside `advrob-project/operator` start the docker containers. This will start 3 contianers. Two are for remote networking and routing, while the last one called `operator` runs `ROS2 Iron` communicates with the raspberry pi via ros2. 
 ```
 docker compose up
 ```
-3. Enter the `operator` container.
+3. In another terminal enter the `operator` container.
 ```
 docker exec -it operator-operator-1 bash
 ```
@@ -19,11 +18,19 @@ docker exec -it operator-operator-1 bash
 source /opt/ros/iron/setup.bash
 ros2 topic list
 ```
-You should see the follwoing topics: `TODO`
+You should see the following topics: `TODO` (for now you can verify that you are connected by looking at the terminal window where you started the containers and seeing that a "Hello World" message is being received every second). 
 
-5. Create a directory with your first and last name in the `/home/workspace/` directory in the following format: `FIRSTNAME_LASTNAME` (e.g. `JOHN_SMITH`). Make sure to work and save anything you want to persist in the `/home/workspace/` directory. Only files in this directory will be saved. 
+5. Any ros2 topics/services/actions that you write will pass through the following filter (`TODO`: modify filter). Make sure you only publish and subscribe to allowed topics. 
 ```
-mkdir FIRSTNAME_LASTNAME
+allowlist:
+  - name: "ra/*"
+  - name: "rp/*"
+  - name: "rq/*"
+  - name: "rr/*"
+  - name: "rs/*"
+  - name: "rt/*"
+blocklist: []
+builtin-topics: []
 ```
 
 ## Notes
