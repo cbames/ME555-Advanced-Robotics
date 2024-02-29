@@ -31,4 +31,3 @@ services:
     environment:
       - HOSTNAME=duke-rpi-host
       - JOINCODE # set this in .env file, find it in husarnet dashboard
-      - WAIT_HOSTNAMES=duke-rpi-host, operator-host

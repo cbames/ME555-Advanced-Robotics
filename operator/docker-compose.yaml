@@ -34,7 +34,7 @@ services:
     devices:
       - /dev/net/tun
     environment:
-      - HOSTNAME=operator-host
-      - JOINCODE # found in husarnet dashboard, set in .env file in the same directory as this file.
+      - HOSTNAME=operator-${ADVROB_USER}-host
+      - JOINCODE=${JOINCODE} # found in husarnet dashboard, set in .env file in the same directory as this file.
       - HUSARNET_DEBUG=1
-      - WAIT_HOSTNAMES=duke-rpi-host, operator-host
+      - WAIT_HOSTNAMES=duke-rpi-host
