@@ -19,7 +19,7 @@ services:
         condition: service_started
     environment:
       - EXIT_IF_HOST_TABLE_CHANGED=TRUE # exits container, comnined with restart resets peers list 
-      - PARTICIPANTS=husarnet,if-eth0 # interface on which docker containers communicate
+      #- PARTICIPANTS=husarnet,if-eth0 # interface on which docker containers communicate
   
   husarnet:
     image: husarnet/husarnet:2.0.180
