@@ -4,7 +4,7 @@
 
 ### Launch operator environment
 
-1. Launch start script with vpn joincode and advrob-user (FIRSTNAME_LASTNAME)
+1. Launch start script with tje vpn joincode and advrob-user (FIRSTNAME_LASTNAME)
 ```
 cd advrob-project
 ./advrob_setup.sh --advrob-user john_smith --joincode xxxxxxxxxxxxxxx
@@ -33,8 +33,10 @@ blocklist: []
 builtin-topics: []
 ```
 
-## Docker containers
-
+## Notes
+### Networking
+- By default operator uses ROS_DOMAIN_ID=88 and RMW_IMPLEMENTATION=rmw_fastrtps_cpp. Keep these defaults in order to be able to communicate with the pi.
+### Docker
 The `advrob-project/operator/docker-compose.yaml` will start 3 docker containers. Two are for remote networking and routing, while the last one called `operator` runs `ROS2 Iron` communicates with the raspberry pi via ros2. 
 Start containers:
 ```
@@ -46,7 +48,3 @@ Stop containers
 cd advrob-project/operator
 docker compose down
 ```
-
-## Notes
-Networking
-- By default operator uses ROS_DOMAIN_ID=88 and RMW_IMPLEMENTATION=rmw_fastrtps_cpp. Keep these defaults in order to be able to communicate with the pi.
