@@ -4,7 +4,7 @@
 
 ### Launch operator environment
 
-1. Launch start script with tje vpn joincode and advrob-user (FIRSTNAME_LASTNAME)
+1. Launch start script with the vpn joincode and advrob-user (FIRSTNAME_LASTNAME)
 ```
 cd advrob-project
 ./advrob_setup.sh --advrob-user john_smith --joincode xxxxxxxxxxxxxxx
