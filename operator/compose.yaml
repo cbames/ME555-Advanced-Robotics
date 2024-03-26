@@ -1,0 +1,55 @@
+name: operator
+services:
+
+  operator:
+    container_name: operator
+    build: .
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    # interactive mode for this container
+    command: ros2 run demo_nodes_cpp listener
+    stdin_open: true
+    tty: true
+
+  zenoh-dds-bridge:
+    image: eclipse/zenoh-bridge-ros2dds:latest
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - ROS_DISTRO=iron
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    volumes:
+      - ./operator-dds-config.json5:/operator-dds-config.json5
+    depends_on:
+      husarnet: { condition: service_healthy } # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
+    command: ["--config /operator-dds-config.json5"] # if needed
+
+  zenoh-router:
+    image: eclipse/zenoh
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - ./zenoh_docker:/root/.zenoh
+      - ./operator-router-config.json5:/operator-router-config.json5
+    environment:
+      - RUST_LOG=debug
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    depends_on:
+      husarnet: { condition: service_healthy } # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
+    command: ["--config /operator-router-config.json5"] # if needed
+
+  husarnet:
+    image: husarnet/husarnet:2.0.180
+    network_mode: host
+    volumes:
+      - /var/lib/husarnet:/var/lib/husarnet
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - HUSARNET_JOIN_CODE=${HUSARNET_JOIN_CODE}
+      - HUSARNET_HOSTNAME=${HUSARNET_HOSTNAME}
+      - HUSARNET_DEBUG=1
+      #- WAIT_HOSTNAMES=duke-desktop

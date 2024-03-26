@@ -1,4 +1,4 @@
-FROM arm64v8/ros:iron-ros-core
+FROM osrf/ros:iron-desktop-full
 
 COPY ./workspace /home/workspace/
 

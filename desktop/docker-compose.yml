@@ -1,12 +1,11 @@
-version: '2.1'  # Balena supports version 2.1 of the Docker Compose spec
 services:
-  
-  rpi-ros:
+
+  desktop-ros:
     build: .
     network_mode: host # use the host network to be able to communicate with the desktop
-    privileged: true # enable to use GPIO pins on rpi
-    # interactive mode for this container
     command: ros2 run demo_nodes_cpp talker
+    environment:
+      - ROS_DOMAIN_ID=0
     stdin_open: true
     tty: true
 
@@ -26,4 +25,3 @@ services:
     - ROS_DISTRO=humble
     stdin_open: true
     tty: true
-    profiles:
