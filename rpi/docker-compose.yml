@@ -10,24 +10,27 @@ services:
     stdin_open: true
     tty: true
 
-  ros2router:
-    build: ./ros2router
-    network_mode: host
-    restart: unless-stopped # needed to reset peers list if a new peer is added
-    depends_on:
-      husarnet:
-        condition: service_started
-    environment:
-      - EXIT_IF_HOST_TABLE_CHANGED=TRUE # exits container, comnined with restart resets peers list 
-      #- PARTICIPANTS=husarnet,if-eth0 # interface on which docker containers communicate
-  
-  husarnet:
-    image: husarnet/husarnet:2.0.180
-    network_mode: host
+  husarnet-zenoh:
+    build: ./husarnet_zenoh
+    container_name: husarnet-zenoh-bridge
+    network_mode: host # necessary for zenoh-ros2 config, as docker doesn't support multicast udp
+    volumes:
+    - /var/lib/husarnet # persist ip address across docker restarts
     cap_add:
-      - NET_ADMIN
+    - NET_ADMIN
     devices:
-      - '/dev/net/tun'
+    - /dev/net/tun
     environment:
-      - HOSTNAME=duke-rpi-host
-      - JOINCODE # set this in .env file, find it in husarnet dashboard
+      # needed for husarnet
+    - HUSARNET_JOIN_CODE=${COMPOSE_HUSARNET_JOIN_CODE}
+    - HUSARNET_HOSTNAME=${COMPOSE_HUSARNET_HOSTNAME}
+    - HUSARNET_DEBUG=1
+      # needed for zenoh-dds-router
+    - ROS_DISTRO=humble
+    - ROS_DOMAIN_ID=${COMPOSE_ROS_DOMAIN_ID}
+    stdin_open: true
+    tty: true
+    profiles:
+      - gpu
+      - nogpu
+
