@@ -22,9 +22,10 @@ containerinstructions() {
 
 # Initialize ROS_DOMAIN_ID to 0 by default
 ROS_DOMAIN_ID=0
+HUSARNET_HOSTNAME=operator
 
 # Check if ROS_DOMAIN_ID and HUSARNET_JOIN_CODE flags are provided
-if [[ $# -lt 2 ]]; then
+if [[ $# -lt 1 ]]; then
     echo "Usage: $0 -j <HUSARNET_JOIN_CODE> [-d <ROS_DOMAIN_ID>] -o <OPERATOR_ID>"
     exit 1
 fi
@@ -39,7 +40,7 @@ while getopts ":j:d:o:" opt; do
             ROS_DOMAIN_ID=$OPTARG
             ;;
         o )
-            HUSARNET_HOSTNAME=operator-$OPTARG-host
+            HUSARNET_HOSTNAME=$OPTARG
             ;;
         \? )
             echo "Invalid option: $OPTARG" 1>&2
