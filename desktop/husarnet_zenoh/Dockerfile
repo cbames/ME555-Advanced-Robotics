@@ -16,7 +16,7 @@ RUN echo "deb [trusted=yes] https://download.eclipse.org/zenoh/debian-repo/ /" |
 
 # startup with config
 COPY ./limit_bandwidth.sh /
-COPY ./wall-panels-team-dds-config.json5 /
+COPY ./advrob-desktop-dds-config.json5 /
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
