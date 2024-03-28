@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # install ros2 packages
 RUN apt update && apt install -y \
         ros-$ROS_DISTRO-demo-nodes-cpp \
-	ros-$ROS_DISTRO-rmw-cyclonedds-cpp
+	ros-$ROS_DISTRO-rmw-cyclonedds-cpp \
+	ros-$ROS_DISTRO-rviz2 \
+	ros-$ROS_DISTRO-image-transport-plugins
 
 # setup entrypoint
 COPY entrypoint.sh /
