@@ -19,7 +19,7 @@ services:
     - /dev/net/tun
     environment:
       # needed for husarnet
-    - HUSARNET_HOSTNAME=duke-rpi-host
+    - HUSARNET_HOSTNAME=duke-desktop-host
     - HUSARNET_DEBUG=1
       # needed for zenoh-dds-router
     - ROS_DISTRO=humble
