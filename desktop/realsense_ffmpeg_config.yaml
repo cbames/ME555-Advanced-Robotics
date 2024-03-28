@@ -1,0 +1,9 @@
+ffmpeg_image_transport:
+  tf_publish_rate: 1.0
+  preset: "ultrafast"
+  gop: 3
+  bit_rate: 100000
+  qmax: 10
+  profile: "high"
+  measure_performance: true
+  performance_interval: 150

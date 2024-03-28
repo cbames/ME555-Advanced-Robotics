@@ -1,6 +1,7 @@
 services:
 
   desktop-ros:
+    container_name: ${CONTAINER_NAME}
     build: .
     network_mode: host # use the host network to be able to communicate with the desktop
     command: ros2 run demo_nodes_cpp talker
@@ -8,7 +9,6 @@ services:
       - ROS_DOMAIN_ID=0
     stdin_open: true
     tty: true
-
   husarnet-zenoh:
     build: ./husarnet_zenoh
     container_name: husarnet-zenoh-bridge
@@ -25,3 +25,4 @@ services:
     - ROS_DISTRO=humble
     stdin_open: true
     tty: true
+
