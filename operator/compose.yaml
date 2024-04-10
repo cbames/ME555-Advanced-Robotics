@@ -5,7 +5,7 @@ services:
     container_name: operator
     build: .
     environment:
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+      - ROS_DOMAIN_ID=${COMPOSE_ROS_DOMAIN_ID}
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
     volumes:
@@ -14,45 +14,26 @@ services:
     stdin_open: true
     tty: true
 
-  zenoh-dds-bridge:
-    image: eclipse/zenoh-bridge-ros2dds:latest
-    network_mode: host
-    restart: unless-stopped
-    environment:
-      - ROS_DISTRO=iron
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
-    volumes:
-      - ./operator-dds-config.json5:/operator-dds-config.json5
-    depends_on:
-      husarnet: { condition: service_healthy } # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
-    command: ["--config /operator-dds-config.json5"] # if needed
-
-  zenoh-router:
-    image: eclipse/zenoh
-    network_mode: host
-    restart: unless-stopped
-    volumes:
-      - ./zenoh_docker:/root/.zenoh
-      - ./operator-router-config.json5:/operator-router-config.json5
-    environment:
-      - RUST_LOG=debug
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
-    depends_on:
-      husarnet: { condition: service_healthy } # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
-    command: ["--config /operator-router-config.json5"] # if needed
-
-  husarnet:
-    image: husarnet/husarnet:2.0.180
+  husarnet-zenoh-bridge:
+    build: ./husarnet_zenoh
+    container_name: husarnet-zenoh-bridge
     network_mode: host
     volumes:
-      - /var/lib/husarnet:/var/lib/husarnet
-      - /etc/hosts:/etc/hosts
+    - /var/lib/husarnet # persist ip address across docker restarts
     cap_add:
-      - NET_ADMIN
+    - NET_ADMIN
     devices:
-      - /dev/net/tun
+    - /dev/net/tun
+    restart: unless-stopped
     environment:
-      - HUSARNET_JOIN_CODE=${HUSARNET_JOIN_CODE}
-      - HUSARNET_HOSTNAME=${HUSARNET_HOSTNAME}
-      - HUSARNET_DEBUG=1
-      #- WAIT_HOSTNAMES=duke-desktop
+      # needed for husarnet
+    - HUSARNET_JOIN_CODE=${COMPOSE_HUSARNET_JOIN_CODE}
+    - HUSARNET_HOSTNAME=${COMPOSE_HUSARNET_HOSTNAME}
+    - HUSARNET_DEBUG=1
+      # needed for zenoh-dds-router
+    - ROS_DISTRO=humble
+    - ROS_DOMAIN_ID=${COMPOSE_ROS_DOMAIN_ID}
+    - SERVER_NAME=${COMPOSE_SERVER_NAME}
+    stdin_open: true
+    tty: true
+
