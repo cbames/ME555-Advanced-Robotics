@@ -16,14 +16,14 @@ services:
     restart: unless-stopped
     volumes:
     - ./zenoh_docker:/root/.zenoh
-    - ./advrob-router-config.json5:/advrob-router-config.json5
+    - ./desktop-router-config.json5:/desktop-router-config.json5
     environment:
     - ROS_DISTRO=humble
     - RUST_LOG=debug
     - ROS_DOMAIN_ID=14
     depends_on:
     - husarnet-zenoh  # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
-    command: ['--config /advrob-router-config.json5']   # if needed
+    command: ['--config /desktop-router-config.json5']   # if needed
 
   husarnet-zenoh:
     build: ./husarnet_zenoh
