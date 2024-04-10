@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Define container name
 CONTAINER_NAME="operator"
-SERVER_NAME="duke-desktop"
+COMPOSE_SERVER_NAME="duke-desktop"
 
 # Function to prompt for confirmation
 confirm() {

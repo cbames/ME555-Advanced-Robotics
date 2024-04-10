@@ -3,6 +3,7 @@ services:
 
   operator:
     container_name: operator
+    network_mode: host
     build: .
     environment:
       - ROS_DOMAIN_ID=${COMPOSE_ROS_DOMAIN_ID}
@@ -31,7 +32,7 @@ services:
     - HUSARNET_HOSTNAME=${COMPOSE_HUSARNET_HOSTNAME}
     - HUSARNET_DEBUG=1
       # needed for zenoh-dds-router
-    - ROS_DISTRO=humble
+    - ROS_DISTRO=iron
     - ROS_DOMAIN_ID=${COMPOSE_ROS_DOMAIN_ID}
     - SERVER_NAME=${COMPOSE_SERVER_NAME}
     stdin_open: true
