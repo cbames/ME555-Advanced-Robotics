@@ -59,12 +59,21 @@ export HUSARNET_HOSTNAME
 export ROS_DOMAIN_ID
 export CONTAINER_NAME
 
+
+echo "COMPOSE_HUSARNET_JOIN_CODE=$HUSARNET_JOIN_CODE" > .env
+{
+echo "COMPOSE_HUSARNET_HOSTNAME=$HUSARNET_HOSTNAME"
+echo "COMPOSE_ROS_DOMAIN_ID=$ROS_DOMAIN_ID"
+echo "COMPOSE_CONTAINER_NAME=$CONTAINER_NAME"
+} >> .env
+
+
 # Check if the containers managed by the specified docker compose file exist
 if sudo docker ps -a --format '{{.Names}}' | grep -q "$CONTAINER_NAME"; then
     confirm "Containers defined in the $CONTAINER_NAME compose.yaml file will be destroyed. Do you want to proceed?" && \
-    sudo -E docker compose -f ./compose.yaml down
+    sudo docker compose -f ./compose.yaml down
 fi
 
 # Build and start the container
-sudo -E docker compose -f ./compose.yaml up -d --build
+sudo docker compose -f ./compose.yaml up -d --build
 containerinstructions
