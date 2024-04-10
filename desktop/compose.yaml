@@ -1,7 +1,7 @@
 services:
 
   desktop-ros:
-    container_name: ${CONTAINER_NAME}
+    container_name: ${COMPOSE_CONTAINER_NAME}
     build: .
     network_mode: host # use the host network to be able to communicate with the desktop
     command: ros2 run demo_nodes_cpp talker
