@@ -18,12 +18,14 @@ services:
     - ./zenoh_docker:/root/.zenoh
     - ./desktop-router-config.json5:/desktop-router-config.json5
     environment:
-    - ROS_DISTRO=humble
+    - ROS_DISTRO=iron
     - RUST_LOG=debug
-    - ROS_DOMAIN_ID=14
+    - ROS_DOMAIN_ID=0
     depends_on:
     - husarnet-zenoh  # husarnet service is healthy if all hosts listed in WAIT_HOSTNAMES are reachable
     command: ['--config /desktop-router-config.json5']   # if needed
+    stdin_open: true
+    tty: true
 
   husarnet-zenoh:
     build: ./husarnet_zenoh
@@ -35,10 +37,11 @@ services:
     - /dev/net/tun
     environment:
       # needed for husarnet
-    - HUSARNET_HOSTNAME=duke-desktop-host
+    - HUSARNET_HOSTNAME=duke-desktop
     - HUSARNET_DEBUG=1
       # needed for zenoh-dds-router
-    - ROS_DISTRO=humble
+    - ROS_DISTRO=iron
+    - ROS_DOMAIN_ID=0
     stdin_open: true
     tty: true
 
