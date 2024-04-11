@@ -23,22 +23,16 @@ containerinstructions() {
 }
 
 # Check if ROS_DOMAIN_ID and HUSARNET_JOIN_CODE flags are provided
-if [[ $# -lt 4 ]]; then
-    echo "Usage: $0 -j <HUSARNET_JOIN_CODE> -d <ROS_DOMAIN_ID> [-t <SERVER_NAME>] [-n OPERATOR_NAME]"
-    exit 1
-fi
+#if [[ $# -lt 1 ]]; then
+#    echo "Usage: $0  [-d <ROS_DOMAIN_ID>] [-t <SERVER_NAME>] [-n OPERATOR_NAME]"
+#    exit 1
+#fi
 
 # Parse command-line arguments
 while getopts ":j:d:t:n:s:" opt; do
     case ${opt} in
-        j )
-            COMPOSE_HUSARNET_JOIN_CODE=$OPTARG
-            ;;
         d )
             COMPOSE_ROS_DOMAIN_ID=$OPTARG
-            ;;
-        t )
-            COMPOSE_SERVER_NAME=$OPTARG
             ;;
         n )
             OPERATOR_NAME=$OPTARG
@@ -74,13 +68,6 @@ echo "COMPOSE_ROS_DOMAIN_ID=$COMPOSE_ROS_DOMAIN_ID"
 echo "COMPOSE_SERVER_NAME=$COMPOSE_SERVER_NAME"
 } >> .env
 
-# configure host network to work with husranet
-sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
-sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
-sudo sysctl -w net.core.rmem_max=2147483647
-sudo sysctl -w net.ipv6.ip6frag_time=3
-sudo sysctl -w net.ipv6.ip6frag_high_thresh=134217728
-sudo ufw allow in on hnet0 from fc94::/16
 
 
 # Check if the containers managed by the specified docker compose file exist

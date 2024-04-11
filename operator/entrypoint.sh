@@ -10,4 +10,6 @@ set -e
 # shellcheck disable=SC1090
 source "/opt/ros/$ROS_DISTRO/setup.bash" --
 
+zenoh-bridge-ros2dds -e tcp/100.106.215.107:7447
+
 exec "$@"
